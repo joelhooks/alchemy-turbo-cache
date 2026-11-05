@@ -1,0 +1,69 @@
+{
+  "name": "alchemy-turbo-cache",
+  "version": "0.0.0",
+  "private": true,
+  "description": "A team-isolated Turbo remote cache cartridge for Alchemy",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joelhooks/alchemy-turbo-cache.git"
+  },
+  "bin": {
+    "alchemy-turbo-cache-token": "./dist/token-cli.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "PROVENANCE.md",
+    "LICENSE"
+  ],
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./protocol": {
+      "types": "./dist/protocol.d.ts",
+      "import": "./dist/protocol.js"
+    },
+    "./token": {
+      "types": "./dist/token.d.ts",
+      "import": "./dist/token.js"
+    }
+  },
+  "scripts": {
+    "build": "effect-tsgo patch && tsc -p tsconfig.build.json",
+    "prepare": "pnpm build",
+    "typecheck": "pnpm build && tsc --noEmit -p tsconfig.json",
+    "format": "oxfmt --write src test *.ts *.json AGENTS.md README.md PROVENANCE.md docs pnpm-workspace.yaml",
+    "lint": "oxfmt --check src test *.ts *.json AGENTS.md README.md PROVENANCE.md docs pnpm-workspace.yaml && oxlint --type-aware",
+    "check": "pnpm typecheck && pnpm lint",
+    "test": "pnpm build && vitest run",
+    "gate": "pnpm check && pnpm test && pnpm build"
+  },
+  "dependencies": {
+    "@alchemy.run/cloudflare": "2.0.0-beta.85",
+    "@effect/platform-node": "4.1.2",
+    "alchemy": "2.0.0-beta.85",
+    "effect": "4.1.2"
+  },
+  "devDependencies": {
+    "@alchemy.run/test": "2.0.0-beta.85",
+    "@cloudflare/workers-types": "5.20261026.1",
+    "@effect/tsgo": "0.55.0",
+    "@effect/vitest": "4.1.2",
+    "@types/node": "24.19.2",
+    "oxfmt": "0.73.0",
+    "oxlint": "1.88.0",
+    "oxlint-tsgolint": "7.0.2004",
+    "turbo": "2.11.9",
+    "typescript": "7.0.2",
+    "ultracite": "8.0.1",
+    "vitest": "5.0.5"
+  },
+  "engines": {
+    "node": ">=24.18.0"
+  },
+  "packageManager": "pnpm@11.3.0"
+}

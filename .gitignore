@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.alchemy/
+.env*
+.scratch/
+.agent_sources/
+.agent-sources/
+.pi/
+.brain/
+BRAIN.md
