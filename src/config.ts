@@ -14,4 +14,4 @@ export const tokenId = (options: CacheIdentity, team: string) =>
 
 export const foundationId = (options: CacheIdentity) => `${options.resourceNamePrefix}Foundation`;
 
-export const workerId = (options: CacheIdentity) => `${options.resourceNamePrefix}Worker`;
+export const workerId = (options: CacheIdentity) => options.resourceNamePrefix;

@@ -84,7 +84,7 @@ it.prop(
 
 const records = (fqn: string) =>
   Effect.succeed(
-    fqn === "ExampleWorker"
+    fqn === "Example"
       ? {
           attr: { url: "https://cache.example.test/" },
           status: "updated",

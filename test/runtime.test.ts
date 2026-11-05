@@ -259,31 +259,37 @@ test.provider(
 );
 
 test.provider(
-  "the cartridge generates a bound secret and hands it off from completed state",
+  "the rat-stack adoption contract preserves all resource fqns and the token handoff",
   (stack) =>
     Effect.gen(function* cartridgeStateHandoff() {
       // @effect-diagnostics-next-line anyUnknownInErrorContext:off -- Upstream ScratchStack.deploy erases its provider error type; the local test boundary turns it into a defect.
       const deployment = yield* Effect.orDie(stack.deploy(TurboCache));
 
       const state = yield* Effect.flatten(State.State).pipe(Effect.provide(stack.state));
+      const fqns = yield* state.list({ stack: stack.name, stage: stack.stage });
+      expect(fqns.toSorted()).toEqual([
+        "TurboCache",
+        "TurboCacheFoundation/TurboCacheBucket",
+        "TurboCacheFoundation/TurboCacheToken-rat-stack",
+      ]);
 
       const values = yield* handoffToken(
         (fqn) => state.get({ fqn, stack: stack.name, stage: stack.stage }).pipe(Effect.orDie),
         {
           args: [
             "-e",
-            "let input=''; process.stdin.on('data',x=>input+=x); process.stdin.on('end',async()=>{ if(!/^[a-f0-9]{64}$/.test(input))process.exit(1); const response=await fetch(process.argv[1]+'/v8/artifacts/status?slug=alpha',{headers:{authorization:'Bearer '+input}}); process.exit(response.status===200?0:2); });",
+            "let input=''; process.stdin.on('data',x=>input+=x); process.stdin.on('end',async()=>{ if(!/^[a-f0-9]{64}$/.test(input))process.exit(1); const response=await fetch(process.argv[1]+'/v8/artifacts/status?slug=rat-stack',{headers:{authorization:'Bearer '+input}}); process.exit(response.status===200?0:2); });",
             deployment.url ?? "",
           ],
           command: process.execPath,
-          resourceNamePrefix: "FixtureCache",
-          team: "alpha",
-          teams: ["alpha"],
+          resourceNamePrefix: "TurboCache",
+          team: "rat-stack",
+          teams: ["rat-stack"],
         },
       );
 
       expect(values.TURBO_API).toBe(new URL(deployment.url ?? "").origin);
-      expect(values.TURBO_TEAM).toBe("alpha");
+      expect(values.TURBO_TEAM).toBe("rat-stack");
 
       return values;
     }),

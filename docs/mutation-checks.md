@@ -2,19 +2,20 @@
 
 Each planted bug was tested in isolation and reverted. Every final mutation produced a failing test, not a compiler failure. The normal gate runs with the original implementation restored.
 
-| Property                         | Planted bug                                                  | Observed failure                                    |
-| -------------------------------- | ------------------------------------------------------------ | --------------------------------------------------- |
-| Team isolation                   | Remove the team prefix from the R2 artifact key.             | The other team's GET returned 200 instead of 404.   |
-| Byte-identical round trip        | Store `corrupt` instead of the request body.                 | Returned bytes did not equal the generated payload. |
-| HEAD agrees with GET             | Return status 201 for a successful HEAD.                     | HEAD status differed from GET's 200.                |
-| Bad bearer never reaches storage | Call `bucket.head` before returning the bad-bearer 401.      | The fixture's forbidden storage function ran.       |
-| Real Turbo remote hit            | Acknowledge PUT without storing the artifact.                | The second run did not report `1 cached, 1 total`.  |
-| Token delivered through stdin    | Send an empty stream instead of the deployed token.          | The receiver failed its hash check.                 |
-| Receiver stdout suppressed       | Change stdout from `ignore` to `inherit`.                    | The outer process captured the fixture token.       |
-| Receiver stderr suppressed       | Change stderr from `ignore` to `inherit`.                    | The outer process captured the fixture token.       |
-| Read-only state                  | Enable state updates and set the local CI override to false. | Bootstrap or upgrade no longer failed as required.  |
-| Source diagnostics preserved     | Replace the source tag and message with a generic failure.   | The source tag assertion failed.                    |
-| Credential fields excluded       | Serialize the whole source failure into the message.         | The error included the fixture credential field.    |
+| Property                         | Planted bug                                                                      | Observed failure                                                                   |
+| -------------------------------- | -------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| Adoption contract                | Append `Worker` to the Worker resource id instead of using the prefix unchanged. | The exact resource-fqn assertion found `TurboCacheWorker` instead of `TurboCache`. |
+| Team isolation                   | Remove the team prefix from the R2 artifact key.                                 | The other team's GET returned 200 instead of 404.                                  |
+| Byte-identical round trip        | Store `corrupt` instead of the request body.                                     | Returned bytes did not equal the generated payload.                                |
+| HEAD agrees with GET             | Return status 201 for a successful HEAD.                                         | HEAD status differed from GET's 200.                                               |
+| Bad bearer never reaches storage | Call `bucket.head` before returning the bad-bearer 401.                          | The fixture's forbidden storage function ran.                                      |
+| Real Turbo remote hit            | Acknowledge PUT without storing the artifact.                                    | The second run did not report `1 cached, 1 total`.                                 |
+| Token delivered through stdin    | Send an empty stream instead of the deployed token.                              | The receiver failed its hash check.                                                |
+| Receiver stdout suppressed       | Change stdout from `ignore` to `inherit`.                                        | The outer process captured the fixture token.                                      |
+| Receiver stderr suppressed       | Change stderr from `ignore` to `inherit`.                                        | The outer process captured the fixture token.                                      |
+| Read-only state                  | Enable state updates and set the local CI override to false.                     | Bootstrap or upgrade no longer failed as required.                                 |
+| Source diagnostics preserved     | Replace the source tag and message with a generic failure.                       | The source tag assertion failed.                                                   |
+| Credential fields excluded       | Serialize the whole source failure into the message.                             | The error included the fixture credential field.                                   |
 
 ## Test repaired during extraction
 

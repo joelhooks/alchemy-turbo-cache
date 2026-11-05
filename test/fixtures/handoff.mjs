@@ -9,7 +9,7 @@ NodeRuntime.runMain(
   handoffToken(
     (fqn) =>
       Effect.succeed(
-        fqn === "ExampleWorker"
+        fqn === "Example"
           ? { attr: { url: "https://cache.example.test" }, status: "updated" }
           : {
               attr: { text: Redacted.make(token) },

@@ -52,7 +52,7 @@ Inject `CLOUDFLARE_ACCOUNT_ID` and `CLOUDFLARE_API_TOKEN` into the process with 
 
 Every team, retention interval and resource prefix is explicit. `main` points at the module that default-exports the cartridge, not the package entry. `retainStages` defaults to `["prod"]` and applies to the Worker, bucket and generated tokens. Set it explicitly to retain other stages, or use `[]` for disposable resources.
 
-The resource names are `${resourceNamePrefix}Worker`, `${resourceNamePrefix}Foundation/${resourceNamePrefix}Bucket`, and `${resourceNamePrefix}Foundation/${resourceNamePrefix}Token-${team}`. Prefixes must be distinct within a Stack. Renaming a prefix or team changes resource identity; it does not rotate or migrate existing state. Retention starts at upload, reads do not extend it, and R2 lifecycle deletion is asynchronous.
+The resource names are `${resourceNamePrefix}`, `${resourceNamePrefix}Foundation/${resourceNamePrefix}Bucket`, and `${resourceNamePrefix}Foundation/${resourceNamePrefix}Token-${team}`. Prefixes must be distinct within a Stack. Renaming a prefix or team changes resource identity; it does not rotate or migrate existing state. Retention starts at upload, reads do not extend it, and R2 lifecycle deletion is asynchronous.
 
 ## Hand off the token
 
